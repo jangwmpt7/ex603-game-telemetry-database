@@ -1,6 +1,7 @@
 # ex603-game-telemetry-database
 
 Name: Jack Nguyen
+
 Theme: Game Telemetry
 
 ## Description
