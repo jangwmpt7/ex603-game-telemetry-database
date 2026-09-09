@@ -13,7 +13,7 @@
 | Attribute | Description | Constraints |
 | --- | --- | --- |
 | mID | Integer that uniquely identifies a match, regardless of the match name. | PRIMARY KEY |
-| MatchName | Variable length up to 100 characters that serve as the match's name and cannot be blank.  Subject to change. | NOT NULL |
+| MatchName | Variable length up to 100 characters that serve as the match's name.  Subject to change. |  |
 | Status | Variable length up to 11 characters, cannot be blank, and serves as an activity flag that can either be "Starting", "In Progress", or "Over".  Subject to change. | NOT NULL, CHECK |
 | NumericAttribute | Integer that cannot be blank.  Purpose for filtering as numeric attribute is yet to be known. | NOT NULL |
 
