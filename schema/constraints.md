@@ -37,7 +37,7 @@
 | Attribute | Description | Constraints |
 | --- | --- | --- |
 | gmID | Integer that uniquely identifies a gamemode, regardless of its name. | PRIMARY KEY |
-| ModeName | Variable length up to 100 characters that serve as the gamemode's name and cannot be blank. | NOT NULL |
+| ModeName | Variable length up to 100 characters that serve as the gamemode's name, cannot be blank, and no duplicates | NOT NULL, UNIQUE |
 
 
 # MatchModes
