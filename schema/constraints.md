@@ -22,7 +22,7 @@
 
 | Attribute | Description | Constraints |
 | --- | --- | --- |
-| pID | Integer that is linked to the corresponding player by their ID (pID) from Players schema, cannot be blank.  If that player is removed from that schema, then the row that comprises their record of the match that they participated in (as shown below) in this schema would be removed as well. | NOT NULL, FOREIGN KEY, ON DELETE CASCADE |
+| pID | Integer that identifies the player, by their ID (pID) from Players schema, and cannot be blank.  If that player is removed from that schema, then the row that comprises their record of the match that they participated in (as shown below) in this schema would be removed as well. | NOT NULL, FOREIGN KEY, ON DELETE CASCADE |
 | mID | Integer that identifies the match, by its ID (mID) from the Matches schema, that the aforementioned player participates in and cannot be blank.  If that match is removed from that schema, then this key that identify it on this schema would be set to blank while preserving the player's records in the row (as shown below). | FOREIGN KEY, ON DELETE SET NULL |
 | mpTimestamp | Timestamp that consists of the date and time of the player's participation of the match.  Can be left as blank if that match is marked with "Starting" in Matches schema. |  |
 | Score | Integer that tracks the player's score in the match, must be a positive integer, and cannot be blank. | NOT NULL, CHECK |
