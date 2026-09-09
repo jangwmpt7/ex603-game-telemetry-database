@@ -1,8 +1,8 @@
 The database will include five schemas for the players (actor), matches (producer), match participants (event), game modes (catalog), and match modes (junction), as they are shown below.
 
 * Players(<ins>pID</ins>, Username, XP, Level)
-* Matches(<ins>mID</ins>, MatchName, ActivityFlag, NumericAttribute)
-* MatchParticipants(pID<sup>FK_Players.pID</sup>, mID<sup>FK_Matches.mID</sup>, Timestamp, Score, Kills, Deaths, Assists, Status)
+* Matches(<ins>mID</ins>, MatchName, matchStatus, NumericAttribute)
+* MatchParticipants(pID<sup>FK_Players.pID</sup>, mID<sup>FK_Matches.mID</sup>, Timestamp, Score, Kills, Deaths, Assists, mpStatus)
 * GameModes(<ins>gmID</ins>, ModeName)
 * MatchModes(<ins>mID<sup>FK_Matches.mID</sup>, gmID<sup>FK_GameModes.gmID</sup></ins>)
 
