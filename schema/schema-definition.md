@@ -2,7 +2,7 @@ The database will include five schemas for the players (actor), matches (produce
 
 * Players(<ins>pID</ins>, Username, email, joined_at, XP, Level, referred_by<sup>FK_Players.pID</sup>)
 * Matches(<ins>mID</ins>, MatchName, Status, _NumbersOfPlayersParticipated_)
-* MatchParticipants(pID<sup>FK_Players.pID</sup>, mID<sup>FK_Matches.mID</sup>, mpTimestamp, Faction, Score, Kills, Deaths, Assists, Outcome)
+* MatchParticipants(<ins>pID<sup>FK_Players.pID</sup>, mID<sup>FK_Matches.mID</sup></ins>, mpTimestamp, Faction, Score, Kills, Deaths, Assists, Outcome)
 * GameModes(<ins>gmID</ins>, ModeName, Description, TeamBased)
 * MatchModes(<ins>mID<sup>FK_Matches.mID</sup>, gmID<sup>FK_GameModes.gmID</sup></ins>, assigned_at)
 
