@@ -7,36 +7,36 @@ SELECT player_name, match_label AS match_that_the_player_participated_in, joined
 FROM match_participants
 JOIN players ON match_participants.player_id = players.player_id
 JOIN matches ON match_participants.match_id = matches.match_id
-WHERE disconnect_reason != 'Player quit';
---  Number of rows returned by that query: 27
+WHERE disconnect_reason != 'Network timeout';
+--  Number of rows returned by that query: 22
 --  Proof using the below query.
 SELECT COUNT(*)
 FROM match_participants
-WHERE disconnect_reason != 'Player quit';
+WHERE disconnect_reason != 'Network timeout';
 
 -- 3.2a.4.  Query that count the rows that the first one of the above question has omitted.
 --          REQUIREMENTS: SELECT, COUNT, WHERE, =
 SELECT COUNT(*)
 FROM match_participants
-WHERE disconnect_reason = 'Player quit';
---  Output: 7, which is the number of records where disconnect_reason = 'Player quit'.
---  27 + 7 = 34 ≠ 200, which is the total number of records in the match_participants table.
+WHERE disconnect_reason = 'Network timeout';
+--  Output: 12, which is the number of records where disconnect_reason = 'Network timeout'.
+--  22 + 12 = 34 ≠ 200, which is the total number of records in the match_participants table.
 --  The query below that returns that number.
 SELECT COUNT(*)
 FROM match_participants;
 
 -- 3.2a.5.  Repaired version of the first query of 3.2a.2., using an explicit IS NULL condition or COALESCE.
---          REQUIREMENTS: SELECT, WHERE, IS NULL, COALESCE
+--          REQUIREMENTS: SELECT, WHERE, COALESCE
 SELECT player_name, match_label AS match_that_the_player_participated_in, joined_at, participation_status, COALESCE(disconnect_reason, 'No connection issues') AS reason
 FROM match_participants
 JOIN players ON match_participants.player_id = players.player_id
 JOIN matches ON match_participants.match_id = matches.match_id
-WHERE disconnect_reason != 'Player quit' OR disconnect_reason IS NULL;
---  Number of rows returned by that query: 193 = 200 - 7
+WHERE COALESCE(disconnect_reason, 'No connection issues') != 'Network timeout';
+--  Number of rows returned by that query: 188 = 200 - 22
 --  Proof using the below query.
 SELECT COUNT(*)
 FROM match_participants
-WHERE disconnect_reason != 'Player quit' OR disconnect_reason IS NULL;
+WHERE COALESCE(disconnect_reason, 'No connection issues') != 'Network timeout';
 
 -- 3.2b.1.  A query that defines an alias in SELECT and reference it in WHERE.
 --          REQUIREMENTS: SELECT, AS, WHERE
