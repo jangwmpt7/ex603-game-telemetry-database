@@ -14,7 +14,7 @@ SELECT COUNT(*)
 FROM match_participants
 WHERE disconnect_reason != 'Network timeout';
 
--- 3.2a.4.  Query that count the rows that the first one of the above question has omitted.
+-- 3.2a.3.  Query that count the rows that the first one of the above question has omitted.
 --          REQUIREMENTS: SELECT, COUNT, WHERE, =
 SELECT COUNT(*)
 FROM match_participants
@@ -25,7 +25,7 @@ WHERE disconnect_reason = 'Network timeout';
 SELECT COUNT(*)
 FROM match_participants;
 
--- 3.2a.5.  Repaired version of the first query of 3.2a.2., using an explicit IS NULL condition or COALESCE.
+-- 3.2a.4.  Repaired version of the first query of 3.2a.2., using an explicit IS NULL condition or COALESCE.
 --          REQUIREMENTS: SELECT, WHERE, COALESCE
 SELECT player_name, match_label AS match_that_the_player_participated_in, joined_at, participation_status, COALESCE(disconnect_reason, 'No connection issues') AS reason
 FROM match_participants
