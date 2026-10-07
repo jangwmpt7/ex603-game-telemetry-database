@@ -92,5 +92,6 @@ SELECT player_name FROM (
         SELECT player_id FROM match_participants JOIN unranked_matches ON match_participants.match_id = unranked_matches.match_id )
     SELECT player_name FROM players WHERE player_id NOT IN (SELECT player_id FROM unranked_match_participants) ORDER BY player_name )
     AS query_2;
+-- All of these queries that each that compare the difference between two queries return nothing, meaning that the three queries did return the results.
 
 -- 3.3.5.   The introduction of duplicate values could break the equivalence of the three queries.
