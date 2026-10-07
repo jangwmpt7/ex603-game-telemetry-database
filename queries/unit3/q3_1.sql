@@ -31,9 +31,10 @@ SELECT p1.player_name, coalesce(p2.player_name, 'Self-recruited') AS recruiter_n
 FROM players p1
 LEFT JOIN players p2 on p1.recruited_by = p2.player_id;
 
--- 3.1.5.   A query with a calculated/computed columns, such as the average score that the player has earned per minute for each match.
+-- 3.1.5.   A query with a calculated/computed columns, such as the bonus score that a player has earned during a ranked match.
 --          REQUIREMENTS: SELECT, AS
-SELECT participation_id, player_name, match_label AS match_that_the_player_participated_in, participation_status, score/duration_min AS points_per_minute
+SELECT participation_id, player_name, match_label AS match_that_the_player_participated_in, participation_status, score, (score*xp_multiplier)-score AS bonus_score_earned
 FROM match_participants
 JOIN players ON match_participants.player_id = players.player_id
-JOIN matches ON match_participants.match_id = matches.match_id;
+JOIN matches ON match_participants.match_id = matches.match_id
+WHERE matches.is_ranked = true;
