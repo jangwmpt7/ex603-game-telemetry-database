@@ -18,8 +18,7 @@ GROUP BY match_id ORDER BY total_participations DESC;
 --          REQUIREMENTS: SELECT, COUNT, AVG, GROUP BY, HAVING, ORDER BY
 SELECT match_id, COUNT(*) AS total_participations, ROUND(AVG(score), 2) AS average_score FROM match_participants
 GROUP BY match_id HAVING COUNT(*) > 16 ORDER BY total_participations DESC;
---  Filtering matches to those with more than 16 participation excluded the lowest-performing matches in terms of their average scores, which each undershoot the average
---  score per participation by a substantial amount.  In other words, I excluded the matches that potentially have high network timeout rates.
+--  I chose 16 as the minimum of total participations for each match.  That number is just above the average number of participants per match, meaning that it is high enough.
 
 -- 4.1.4.   Query that groups the data by two dimensions, including region, and calculate the relevant summary statistics.
 --          REQUIREMENTS: SELECT, GROUP BY
