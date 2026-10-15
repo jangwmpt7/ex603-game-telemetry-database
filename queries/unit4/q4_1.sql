@@ -14,10 +14,10 @@ GROUP BY match_id ORDER BY total_participations DESC;
 --  Note that matches with fewer participation records generally underestimate the average score per participation with their average score by a significant amount.
 --  For that, I could consider that these matches might have high rates of network timeouts that attributed to their below-average performance.
 
--- 4.1.3.   Same query as above, but only looking for ones that each has more than 16 participation records.
+-- 4.1.3.   Same query as above, but only looking for ones that each has at least 16 participation records.
 --          REQUIREMENTS: SELECT, COUNT, AVG, GROUP BY, HAVING, ORDER BY
 SELECT match_id, COUNT(*) AS total_participations, ROUND(AVG(score), 2) AS average_score FROM match_participants
-GROUP BY match_id HAVING COUNT(*) > 16 ORDER BY total_participations DESC;
+GROUP BY match_id HAVING COUNT(*) >= 16 ORDER BY total_participations DESC;
 --  I chose 16 as the minimum of total participations for each match.  That number is just above the average number of participants per match, meaning that it is high enough.
 
 -- 4.1.4.   Query that groups the data by two dimensions, including region, and calculate the relevant summary statistics.
