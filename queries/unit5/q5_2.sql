@@ -11,15 +11,13 @@ INNER JOIN match_participants mp ON m.match_id = mp.match_id
 ORDER BY m.match_label;
 
 -- 5.2A.3.  Given the differences of the results of the two queries above...
-WITH all_matches AS (
-    SELECT DISTINCT m.match_label FROM matches m
+WITH num_all_matches AS (
+    SELECT COUNT(DISTINCT m.match_label) AS num_matches FROM matches m
     LEFT JOIN match_participants mp ON m.match_id = mp.match_id
-    ORDER BY m.match_label
-), matches_with_participants AS (
-    SELECT DISTINCT m.match_label FROM matches m
+), num_matches_with_participants AS (
+    SELECT COUNT(DISTINCT m.match_label) AS num_matches FROM matches m
     INNER JOIN match_participants mp ON m.match_id = mp.match_id
-    ORDER BY m.match_label
-) SELECT COUNT(DISTINCT m1.*) - COUNT(DISTINCT m2.*) AS difference FROM all_matches m1, matches_with_participants m2;
+) SELECT nam.num_matches - nmwp.num_matches AS difference FROM num_all_matches nam, num_matches_with_participants nmwp;
 -- ...2 matches are excluded in the second query (5.2A.2) with the INNER JOIN.
 
 -- 5.2A.4.  Finding matches that are missing in the results of query 5.2A.2
