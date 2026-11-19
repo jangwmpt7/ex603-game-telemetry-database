@@ -33,3 +33,22 @@ Although I am more into single-player games, I have also played (competitive) mu
 | [SELECT match_id, COUNT(\*) AS total_participations, COUNT(CASE WHEN disconnect_reason = 'Network timeout' THEN 1 END) AS network_timeouts FROM match_participants GROUP BY match_id ORDER BY match_id;](queries/unit4/q4_2.sql) | How many participation records for each match?  How many of them are classified with network timeouts for each match? |
 | [SELECT CASE WHEN GROUPING(client_region) = 1 THEN 'All regions' ELSE client_region::TEXT END as client_region, COUNT(\*) AS total_participations, COUNT(CASE WHEN disconnect_reason = 'Network timeout' THEN 1 END) AS network_timeouts FROM match_participants GROUP BY ROLLUP(client_region);](queries/unit4/q4_2.sql) | Both overall and for each client region, how many participation records are there, and how many of them ended with network timeouts? |
 | [WITH match_performance AS ( SELECT match_id, COUNT(\*) AS total_participations, ROUND(AVG(score), 2) AS average_score FROM match_participants GROUP BY match_id ), average_participation_per_match AS ( SELECT ROUND(AVG(total_participations)) AS average_participations FROM match_performance ) SELECT match_id, total_participations, average_score FROM match_performance CROSS JOIN average_participation_per_match WHERE total_participations > average_participations ORDER BY total_participations DESC;](queries/unit4/q4_2.sql) | What should be the minimum number of participants to consider for each match? |
+
+### Unit 5
+
+| Query | Business question |
+| --- | --- |
+| [SELECT p.player_name, m.match_label, TO_CHAR(mp.joined_at, 'YYYY-MM-DD HH24:MI:SS') AS paricipation_timestamp FROM players p JOIN match_participants mp ON p.player_id = mp.player_id JOIN matches m ON mp.match_id = m.match_id;](queries/unit5/q5_1.sql) | For each match, which players have participated in it, and when did they do so? |
+| [SELECT m.match_label, g.mode_name FROM matches m JOIN match_modes mm ON m.match_id = mm.match_id JOIN game_modes g ON mm.mode_id = g.mode_id;](queries/unit5/q5_1.sql) | What gamemode(s) for each match? |
+| [SELECT m1.match_label, m1.scheduled_on, m1.server_region, m1.player_count, m2.match_label AS similar_match FROM matches m1 JOIN matches m2 ON m1.player_count = m2.player_count AND m1.is_ranked = m2.is_ranked;](queries/unit5/q5_1.sql) | Which matches are similar in terms of player count and ranked classification. |
+| [SELECT DISTINCT m.match_label FROM matches m LEFT JOIN match_participants mp ON m.match_id = mp.match_id ORDER BY m.match_label;](queries/unit5/q5_2.sql) and [SELECT DISTINCT m.match_label FROM match_participants mp RIGHT JOIN matches m ON mp.match_id = m.match_id ORDER BY m.match_label;](queries/unit5/q5_1.sql) | Which matches are there? |
+| [SELECT DISTINCT m.match_label FROM matches m INNER JOIN match_participants mp ON m.match_id = mp.match_id ORDER BY m.match_label;](queries/unit5/q5_2.sql) | Which matches are each associated with at least one participation record? |
+| [WITH all_matches AS ( SELECT DISTINCT m.match_label FROM matches m LEFT JOIN match_participants mp ON m.match_id = mp.match_id ORDER BY m.match_label ), matches_with_participants AS ( SELECT DISTINCT m.match_label FROM matches m INNER JOIN match_participants mp ON m.match_id = mp.match_id ORDER BY m.match_label ) SELECT match_label AS missing_matches FROM all_matches EXCEPT (SELECT match_label FROM matches_with_participants);](queries/unit5/q5_2.sql), [SELECT match_label FROM matches m WHERE NOT EXISTS ( SELECT 1 FROM match_participants mp WHERE m.match_id = mp.match_id);](queries/unit5/q5_2.sql), and [SELECT match_label FROM matches EXCEPT ( SELECT match_label FROM matches m JOIN match_participants mp ON m.match_id = mp.match_id );](queries/unit5/q5_2.sql) | Which matches are not associated with any participation records at all? |
+| [SELECT DISTINCT m.match_label, mp.participation_id FROM matches m FULL OUTER JOIN match_participants mp ON m.match_id = mp.match_id ORDER BY m.match_label, mp.participation_id;](queries/unit5/q5_2.sql) | Which matches and participation records are associated with each other, and which one of them aren't? |
+| []() | WIP |
+| []() | WIP |
+
+### Unit 6
+
+WIP
+
