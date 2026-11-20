@@ -61,3 +61,19 @@ Although I am more into single-player games, I have also played (competitive) mu
 | [WITH daily_match_participants AS ( SELECT match_id, joined_at::date AS day, COUNT(*) AS daily_participants FROM match_participants GROUP BY (match_id, day) ORDER BY match_id, day ), gaps AS ( SELECT *, LAG(day) OVER (PARTITION BY match_id ORDER BY day) AS prev_day FROM daily_match_participants dmp ), gaps2 AS ( SELECT *, day - prev_day AS days_since_prev FROM gaps ) SELECT m.match_label, g.daily_participants, g.day AS current_day, g.prev_day, g.days_since_prev FROM gaps2 g JOIN matches m ON g.match_id = m.match_id WHERE days_since_prev > 1;](queries/unit6/q6_2.sql) | Are there gaps in match participation records in terms of days? |
 | [WITH ranked_participants_per_match AS ( SELECT participation_id, ROW_NUMBER() OVER (PARTITION BY match_id ORDER BY (score, participation_status) DESC) AS ranking, FIRST_VALUE(player_id) OVER (PARTITION BY match_id ORDER BY (score, participation_status) DESC) AS best_player_id, player_id, match_id, joined_at, score, participation_status FROM match_participants ORDER BY match_id, ranking ) SELECT rppm.ranking, p.player_name, m.match_label, rppm.score, rppm.joined_at, rppm.participation_status, CASE WHEN rppm.player_id = rppm.best_player_id THEN 'This Row' ELSE bp.player_name END AS best_player_per_match FROM ranked_participants_per_match rppm JOIN players p ON rppm.player_id = p.player_id JOIN players bp ON rppm.best_player_id = bp.player_id JOIN matches m ON rppm.match_id = m.match_id WHERE rppm.ranking <= 3;](queries/unit6/q6_3.sql) | What is the highest scoring player, and the two runner-ups, for each match? |
 | [WITH total_score_per_month AS ( SELECT EXTRACT(MONTH FROM joined_at) AS month, SUM(score) AS total_score_earned FROM match_participants GROUP BY month ), with_previous_totals AS (SELECT *, LAG(total_score_earned) OVER (ORDER BY month) AS total_from_previous_month FROM total_score_per_month) SELECT *, ROUND((total_score_earned - total_from_previous_month) / NULLIF(total_score_earned, 0) * 100, 1) AS pct_change FROM with_previous_totals;](queries/unit6/q6_3.sql) | Are the scores among match participants getting better or worse each month, and at what rate? |
+
+## Technical highlights
+
+Here are the three of my techniques that I have applied in my queries.
+
+1. **JOIN (left table) ON (right table).(right key) = (left table).(left key)**
+
+I use the JOIN clause, which naturally functions as an INNER JOIN (unless I add either LEFT, RIGHT, or (FULL) OUTER right before the word JOIN), to join the table that identifies an entity by its ID with another table that also identifies it by its name, such that I would identify it as the latter in the resulting table while writing down the query.  For example, while searching for players that has participated in a match, I would want to find their actual usernames, and either alongside or not their IDs.
+
+2. **CTEs**
+
+CTEs makes the query more modular, as I am able to test parts of it without changing much, compared to using subqueries.  I primarily use them to break down complex tasks into managable parts, ranging from exclusively finding matches that lack any participation records to filtering the ranked players to the top three per match.
+
+3. **Window functions** (i.e. OVER clause)
+
+More to come...
