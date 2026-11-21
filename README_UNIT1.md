@@ -12,7 +12,7 @@ Although I am more into single-player games, I have also played (competitive) mu
 
 ## Database overview
 
-![](schema/ERD.png)
+![](schema/ERD_Unit1.png)
 
 * **Players** - An actor table that stores player records.  Here, each player is identified with a unique username to prevent confusion, along with their unique ID serving both as a primary key of this table and surrogate key for performance-related purposes.
 * **Matches** - A producer table that stores game match records.  Here, each match is mainly identified by its unique ID, also a surrogate key for performance-related purposes, and they have a status attribute that indicates whether it is active, is inactive, or has ended.  It also has another attribute that tracks how many players are participating in it, which could be used in queries with sorting or filtering purposes.
