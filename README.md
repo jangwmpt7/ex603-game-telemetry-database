@@ -90,7 +90,9 @@ One issue that I found is that there are players who played in the same match mo
 
 ## Video presentation
 
-WIP
+Download it by clicking on the image below.
+
+[![Video Presentation](ex-603_video_thumbnail.png)](https://raw.githubusercontent.com/jangwmpt7/ex603-game-telemetry-database/main/ex-603_video_presentation.mp4)
 
 ## How to run it
 
