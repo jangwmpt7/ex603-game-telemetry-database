@@ -94,7 +94,7 @@ WIP
 
 ## How to run it
 
-1. Download schema.sql from the schema folder, [right here](schema/schema.sql).
+1. Download schema.sql [right here](schema/schema.sql), from the schema folder.
 2. Connect to your target database, if you have not already.
 3. Load the schema.sql file to your SQL application.
 4. Run it.
