@@ -14,11 +14,11 @@ Although I am more into single-player games, I have also played (competitive) mu
 
 ![](schema/ERD.png)
 
-* **Players** - An actor table that stores player records.  Here, each player is identified with a unique username to prevent confusion, along with their unique ID serving both as a primary key of this table and surrogate key for performance-related purposes.
-* **Matches** - A producer table that stores game match records.  Here, each match is mainly identified by its unique ID, also a surrogate key for performance-related purposes, and they have a status attribute that indicates whether it is active, is inactive, or has ended.  It also has another attribute that tracks how many players are participating in it, which could be used in queries with sorting or filtering purposes.
-* **MatchParticipants** - An events table that serve as a connection between matches and players.  In it, a player can participate in many matches, but they can only participate in the same match at most once.  For each player participation, a timestamp that records when the player joined the match is included, along with their score.  In addition, each player participation comes with an attribute that indicates the player's status (i.e. Victory, Draw, or Defeat), faction (if the match is set to a team-based gamemode), and a few other statistics (i.e. kills, deaths, and assists) in the match.  This table uses a composite primary keys of player and match IDs that serve as foreign keys to their respective tables.
-* **GameModes** - A catalog table that stores game mode records.  Here, each game mode is identified with a unique name to prevent confusion, along with its unique ID serving both as a primary key of this table and surrogate key for performance-related purposes.  In addition, each game mode comes with its description, as well as a boolean that identifies whether the mode is team-based or not.
-* **MatchModes** - A junction table that serves as a connection between matches and game modes.  Here, a game mode can be associated with many matches, but a match should only be assigned exactly one game mode.  This table uses a composite primary keys of match and game mode IDs that serve as foreign keys to their respective tables, alongside a timestamp attribute that records when the match is assigned its game mode.
+* **players** - An actor table that stores player records.  Here, each player is identified with a unique usertag to prevent confusion, along with their unique ID serving both as a primary key of this table and surrogate key for performance-related purposes.
+* **matches** - A producer table that stores game match records.  Here, each match is mainly identified by its unique ID, also a surrogate key for performance-related purposes, alongside a flag that indicates whether it is ranked or not.  It also has another attribute that states the number of player for it, which could be used in queries with sorting or filtering purposes.
+* **match_participants** - An events table that serve as a connection between matches and players.  For each player participation, a timestamp that records when the player joined the match is included, along with their score.  In addition, each player participation comes with an attribute that indicates its status.  This table uses a unique identifier to identify each participation record.
+* **game_modes** - A catalog table that stores game mode records.  Here, each game mode is identified with a unique name to prevent confusion, along with its unique ID serving both as a primary key of this table and surrogate key for performance-related purposes.  In addition, each game mode comes with its description.
+* **match_modes** - A junction table that serves as a connection between matches and game modes.  Here, a game mode can be associated with many matches, but a match should only be assigned exactly one game mode.  This table uses a composite primary keys of match and game mode IDs that serve as foreign keys to their respective tables, alongside a timestamp attribute that records when the match is assigned its game mode.
 
 ## Query catalogue
 
@@ -86,7 +86,7 @@ Another thing I found is that the scores earned by match participants overtime i
 
 ## Limitations and future improvements
 
-WIP
+One issue that I found is that there are players who played in the same match more than once.  This compromises the data quality, alongside the aforementioned matches that lack any participants, such that I can see the same player two times in a single match while ranking the top three participants by score, which is something that I did not expect at all.  To address this, instead of using an identifier as a primary key of match_participants, I would create a composite primary key of player_id and match_id to enforce the rule that a player can participate in the same match at most once, even though they can participate in more than one matches, which is something I think that the database should follow.
 
 ## Video presentation
 
@@ -94,4 +94,9 @@ WIP
 
 ## How to run it
 
-WIP
+1. Download schema.sql from the schema folder, [right here](schema/schema.sql).
+2. Connect to your target database, if you have not already.
+3. Load the schema.sql file to your SQL application.
+4. Run it.
+5. Check to make sure that the tables are created.
+6. If the parts above are done, all that is left to do is add in the data to the tables, and then you are ready to query!
